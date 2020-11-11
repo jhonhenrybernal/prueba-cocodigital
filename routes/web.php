@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PlansController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,9 +15,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('plans.index');
+    })->name('dashboard');
+
+    Route::get('plans',[PlansController::class, 'sspPlans'])->name('plans');
+    Route::get('plans/select/{id}', [PlansController::class, 'planSelect'])->name('plans');
+
+
+    Route::get('/plans/list', function () {
+        return view('plans.list');
+    })->name('plan.list');
+});

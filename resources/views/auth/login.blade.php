@@ -14,6 +14,9 @@
 
         <form method="POST" action="{{ route('login') }}">
             @csrf
+            <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('register') }}">
+                {{ __('Para iniciar y acceder registrese primero') }}
+            </a>
 
             <div>
                 <x-jet-label for="email" value="{{ __('Email') }}" />
