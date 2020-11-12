@@ -23,11 +23,23 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return view('plans.index');
     })->name('dashboard');
 
-    Route::get('plans',[PlansController::class, 'sspPlans'])->name('plans');
+    Route::get('plans',[PlansController::class, 'sspMi'])->name('plans');
     Route::get('plans/select/{id}', [PlansController::class, 'planSelect'])->name('plans');
 
 
     Route::get('/plans/list', function () {
         return view('plans.list');
     })->name('plan.list');
+
+    //forma uno
+    Route::get('plans/list/ssp', [PlansController::class, 'sspList'])->name('plans.list.ssp');
+    Route::post('/plans/add/', 'App\Http\Controllers\PlansController@add')->name('plan.add');
+
+    Route::get('/client', function () {
+        return view('client.index');
+    })->name('client.index');
+
+    //forma dos
+    Route::get('/client/ssp/', 'App\Http\Controllers\ClientsController@sspList')->name('client.ssp');
+
 });

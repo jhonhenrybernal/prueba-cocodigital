@@ -1,111 +1,81 @@
-<!DOCTYPE html>
-<html><head>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <script type="text/javascript" src="//code.jquery.com/jquery-2.1.0.js"></script>
-  <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-  <script type="text/javascript" src="//unpkg.com/vue@latest/dist/vue.js"></script>
-  <script type="text/javascript" src="//rawgit.com/wenzhixin/vue-bootstrap-table/develop/docs/static/dist/vue-bootstrap-table.js"></script>
-  <title>Vue Bootstrap Table</title>
+<template>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Nuevo plan</div>
+                    <span>TIPO:</span>
+                    <input v-model="tipo" placeholder="tipo de plan">
 
-<script type="text/javascript">//<![CDATA[
-$(window).load(function(){
-var vm = new Vue({
-  el: '#table',
-  components: {
-    'bootstrap-table': BootstrapTable
-  },
-  data: {
-    columns: [
-      {
-        title: 'Item ID',
-        field: 'id'
-      },
-      {
-        field: 'name',
-        title: 'Item Name'
-      }, {
-        field: 'price',
-        title: 'Item Price'
-      }
-    ],
-    data: [
-      {
-        "id": 0,
-        "name": "Item 0",
-        "price": "$0"
-      },
-      {
-        "id": 1,
-        "name": "Item 1",
-        "price": "$1"
-      },
-      {
-        "id": 2,
-        "name": "Item 2",
-        "price": "$2"
-      },
-      {
-        "id": 3,
-        "name": "Item 3",
-        "price": "$3"
-      },
-      {
-        "id": 4,
-        "name": "Item 4",
-        "price": "$4"
-      },
-      {
-        "id": 5,
-        "name": "Item 5",
-        "price": "$5"
-      }
-    ],
-    options: {
+                    <span>VALOR:</span>
+                    <input v-model="valor" placeholder="Valor del plan">
 
+
+                    <span>Cantidad:</span>
+                    <input v-model="cant" placeholder="cantidad del plan">
+                    <button v-if="save"  class="primary" @click="savePlan">Guardar</button>
+                    <br>
+                    <div class="card-header">Planes actuales</div>
+                    <div class="card-body">
+                        <datatable :columns="columns" :data="rows"></datatable>
+                        <datatable-pager v-model="page" type="abbreviated" :per-page="per_page"></datatable-pager>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+
+   import { VuejsDatatableFactory } from 'vuejs-datatable';
+
+    export default {
+        components: { VuejsDatatableFactory },
+        mounted() {
+            console.log('Component mounted.')
+        },
+        data(){
+            return {
+                columns: [
+                        {label: 'id',   field: 'id'},
+                        {label: 'Tipo', field: 'type'},
+                        {label: 'Valor',field: 'value'},
+                        {label: 'Cant', field: 'cant'}
+                    ],
+                rows: [],
+                page: 1,
+                per_page: 2,
+                valor: '',
+                cant: '',
+                tipo: '',
+                save: true,
+            }
+        },
+        methods:{
+            getPosts: function() {
+                axios.get('/plans/list/ssp').then(function(response){
+                    this.rows = response.data;
+                }.bind(this));
+            },
+
+            savePlan(){
+                axios.post('/plans/add', {
+                    tipo: this.tipo,
+                    valor: this.valor,
+                    cant: this.cant
+                })
+                .then(response=>{
+                    console.log(response)
+                })
+                .catch(function (error) {
+                    alert('warnign')
+                });
+            }
+        },
+        created: function(){
+            this.getPosts()
+        }
     }
-  }
-});
-});//]]>
-
 </script>
-</head>
-
-<body>
-  <div id="table">
-    <div class="bootstrap-table">
-      <div class="fixed-table-toolbar">
-	<div class="bs-bars pull-left"></div>
-	<div class="columns columns-right btn-group pull-right">  </div></div>
-      <div class="fixed-table-container" style="padding-bottom: 0px;">
-	<div class="fixed-table-body">
-
-	  <table class="table table-hover">
-	    <thead>
-	      <tr>
-		<th tabindex="0" style="" data-field="id">
-		  <div class="th-inner both">Item ID</div>
-		  <div class="fht-cell"></div>
-		</th>
-		<th tabindex="0" style="" data-field="name">
-		  <div class="th-inner both">Item Name</div>
-		  <div class="fht-cell"></div>
-		</th>
-		<th tabindex="0" style="" data-field="price">
-		  <div class="th-inner both">Item Price</div>
-		  <div class="fht-cell"></div>
-		</th>
-	      </tr>
-	    </thead>
-	    <tbody>
-            <tr v-for="row in data">
-               <td></td><td></td><td></td>
-            </tr>
-	    </tbody>
-	  </table>
-	</div>
-      </div>
-      <div class="clearfix"></div></div>
-</div>
-</body>
-</html>

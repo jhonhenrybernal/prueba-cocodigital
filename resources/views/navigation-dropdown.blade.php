@@ -16,7 +16,10 @@
                         {{ __('Inicio') }}
                     </x-jet-nav-link>
                     <x-jet-nav-link href="{{ route('plan.list') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Planes') }}
+                        {{ __('Planes VueJs') }}
+                    </x-jet-nav-link>
+                    <x-jet-nav-link href="{{ route('client.index') }}" :active="request()->routeIs('dashboard')">
+                        {{ __('Clientes jquery') }}
                     </x-jet-nav-link>
                 </div>
             </div>
