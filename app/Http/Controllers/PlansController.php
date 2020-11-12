@@ -37,7 +37,8 @@ class PlansController extends Controller
         $plan->cant = $request['cant'];
         $plan->save();
 
-        return response()->json(true);
+        $plan = Plans::get();
+        return response()->json($plan);
 
     }
 }

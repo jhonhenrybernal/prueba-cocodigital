@@ -1962,7 +1962,7 @@ __webpack_require__.r(__webpack_exports__);
         field: 'cant'
       }],
       rows: [],
-      page: 1,
+      page: 5,
       per_page: 2,
       valor: '',
       cant: '',
@@ -1977,12 +1977,17 @@ __webpack_require__.r(__webpack_exports__);
       }.bind(this));
     },
     savePlan: function savePlan() {
+      var _this = this;
+
       axios.post('/plans/add', {
         tipo: this.tipo,
         valor: this.valor,
         cant: this.cant
       }).then(function (response) {
-        console.log(response);
+        _this.rows = response.data;
+        _this.tipo = '';
+        _this.valor = '';
+        _this.cant = '';
       })["catch"](function (error) {
         alert('warnign');
       });
@@ -20372,7 +20377,7 @@ var render = function() {
           _vm.save
             ? _c(
                 "button",
-                { staticClass: "primary", on: { click: _vm.savePlan } },
+                { staticClass: "btn btn-primary", on: { click: _vm.savePlan } },
                 [_vm._v("Guardar")]
               )
             : _vm._e(),

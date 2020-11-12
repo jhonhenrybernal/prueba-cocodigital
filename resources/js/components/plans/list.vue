@@ -13,7 +13,7 @@
 
                     <span>Cantidad:</span>
                     <input v-model="cant" placeholder="cantidad del plan">
-                    <button v-if="save"  class="primary" @click="savePlan">Guardar</button>
+                    <button v-if="save"  class="btn btn-primary" @click="savePlan">Guardar</button>
                     <br>
                     <div class="card-header">Planes actuales</div>
                     <div class="card-body">
@@ -45,7 +45,7 @@
                         {label: 'Cant', field: 'cant'}
                     ],
                 rows: [],
-                page: 1,
+                page: 5,
                 per_page: 2,
                 valor: '',
                 cant: '',
@@ -67,7 +67,10 @@
                     cant: this.cant
                 })
                 .then(response=>{
-                    console.log(response)
+                    this.rows = response.data;
+                    this.tipo = ''
+                    this.valor = ''
+                    this.cant =     ''
                 })
                 .catch(function (error) {
                     alert('warnign')
